@@ -5,10 +5,17 @@ PIP3='sudo pip3 install -q -U --no-cache'
 APT='sudo apt -qq -y install'
 
 echo "* Installing apt dependencies"
-  $APT golang iputils-arping
+  $APT iputils-arping
 
-echo "* Checking for go version 1.7 or later"
+echo "* Install golang-1.10 (protobuf travis workaround)"
+  $APT golang-1.10
+  go get google.golang.org/protobuf/proto
+  which go
+  go version
+
+echo -n "* Checking for go version 1.7 or later: "
   goversion=$(go version | awk '{print $3;}')
+  echo $goversion
   latest=`printf "go1.7\n%s" $goversion | sort -V | tail -n1`
   if [ "$latest" != "$goversion" ]; then
       echo "gnxi requires go version >= go1.7 (found $goversion)"
