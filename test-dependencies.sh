@@ -7,11 +7,13 @@ APT='sudo apt -qq -y install'
 echo "* Installing apt dependencies"
   $APT golang iputils-arping
 
-echo "* Checking for go version 1.7 or later"
+mingoversion=go1.12
+echo -n "* Checking for go version $mingoversion or later: "
   goversion=$(go version | awk '{print $3;}')
-  latest=`printf "go1.7\n%s" $goversion | sort -V | tail -n1`
+  latest=`printf "$mingoversion\n%s" $goversion | sort -V | tail -n1`
+  echo $goversion
   if [ "$latest" != "$goversion" ]; then
-      echo "gnxi requires go version >= go1.7 (found $goversion)"
+      echo "test requires go version >= $mingoversion (found $goversion)"
       exit 1
   fi
 
